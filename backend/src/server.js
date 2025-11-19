@@ -1,6 +1,7 @@
 import express from "express";
 import { ENV } from "./lib/env.js";
 import path from "path";
+import { connectDB } from "./lib/db.js";
 const app = express();
 
 const __dirname = path.resolve();
@@ -23,6 +24,19 @@ app.get("/books",(req,res)=>{
   res.status(200).json({ message: "Books" });
 });
 
-app.listen(ENV.PORT, () => {
-  console.log(`Server is running on http://localhost:${ENV.PORT}`);
-});
+
+
+const startServer = async () => {
+  try{
+    await connectDB();
+    app.listen(ENV.PORT, () => {  
+      console.log(`Server is running on http://localhost:${ENV.PORT}`);
+    });
+    
+  }catch(error){
+    console.error("error in starting server",error);
+    process.exit(1);
+  }
+};
+
+startServer();
