@@ -3,8 +3,17 @@ import { ENV } from "./lib/env.js";
 import path from "path";
 import { connectDB } from "./lib/db.js";
 const app = express();
+import cors from "cors";
+import {serve} from "inngest/express"
+
+import { inngest, functions } from "./lib/inngest.js"
 
 const __dirname = path.resolve();
+
+app.use(express.json());
+app.use(cors({origin: "http://localhost:5173", credentials: true}));
+
+app.use("/api/inngest",serve({client:inngest,functions}))
 
 app.get("/hello", (req, res) => {
   res.status(200).json({ message: "Hello World" });
@@ -23,6 +32,8 @@ if (ENV.NODE_ENV === "production") {
 app.get("/books",(req,res)=>{
   res.status(200).json({ message: "Books" });
 });
+
+console.log(functions);
 
 
 
