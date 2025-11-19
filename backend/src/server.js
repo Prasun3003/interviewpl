@@ -24,14 +24,13 @@ app.get("/hello", (req, res) => {
 if (ENV.NODE_ENV === "production") {
   const frontendPath = path.join(__dirname, "../../frontend/dist");
 
-  // serve static assets
   app.use(express.static(frontendPath));
 
-  // SPA fallback
-  app.get("*", (req, res) => {
+  app.get("/*", (req, res) => {
     res.sendFile(path.join(frontendPath, "index.html"));
   });
 }
+
 
 app.get("/books",(req,res)=>{
   res.status(200).json({ message: "Books" });
