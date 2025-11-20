@@ -61,6 +61,7 @@ import { serve } from "inngest/express";
 import { inngest, functions } from "./lib/inngest.js";
 import { connectDB } from "./lib/db.js";
 import { ENV } from "./lib/env.js";
+import sessionRoutes from "./routes/sessionRoutes.js";
 
 import chatRoutes from "./routes/chatRoutes.js";
 
@@ -79,6 +80,7 @@ app.use("/api/inngest", serve({ client: inngest, functions }));
 // Simple health check
 
 app.use("/api/chat",chatRoutes)
+app.use("api/sessions",sessionRoutes)
 
 app.get("/", (req, res) => {
   res.json({ status: "ok", inngest: true });
