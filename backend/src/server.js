@@ -62,18 +62,31 @@ import { inngest, functions } from "./lib/inngest.js";
 import { connectDB } from "./lib/db.js";
 import { ENV } from "./lib/env.js";
 
+import chatRoutes from "./routes/chatRoutes.js";
+
+import {clerkMiddleware} from "@clerk/express";
+import {protectRoute} from "./middleware/protectRoute.js";
 const app = express();
 
 app.use(express.json());
 app.use(cors({ origin: "*"}));
 
+app.use(clerkMiddleware());
+
 // Inngest endpoint
 app.use("/api/inngest", serve({ client: inngest, functions }));
 
 // Simple health check
+
+app.use("/api/chat",chatRoutes)
+
 app.get("/", (req, res) => {
   res.json({ status: "ok", inngest: true });
 });
+
+app.get("/video-calls",protectRoute,(req,res)=>{
+    res.status(200).json({message:"Video calls"})
+})
 
 async function start() {
   await connectDB();
