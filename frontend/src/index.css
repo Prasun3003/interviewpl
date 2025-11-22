@@ -1,2 +1,10 @@
 @plugin "daisyui";
 @import "tailwindcss";
+
+
+
+html.screenshot-mode .monaco-editor,
+html.screenshot-mode canvas {
+  display: none !important;
+}
+
